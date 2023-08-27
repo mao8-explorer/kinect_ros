@@ -29,6 +29,10 @@
   <depend>xacro</depend>
   <depend>cv_bridge</depend>
   <depend>libopencv-dev</depend>
+  <depend>message_filters</depend>
+  <depend>libpcl-all-dev</depend>
+  <!-- <build_depend>libpcl-all-dev</build_depend> -->
+  <exec_depend>libpcl-all</exec_depend>
 
   <exec_depend>rgbd_launch</exec_depend>
 

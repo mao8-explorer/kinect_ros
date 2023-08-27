@@ -611,7 +611,7 @@ k4a_result_t K4AROSDevice::getRgbPointCloudInDepthFrame(const k4a::capture& capt
                                                                    &calibration_data_.point_cloud_image_);
 
   point_cloud->header.frame_id = calibration_data_.tf_prefix_ + calibration_data_.depth_camera_frame_;
-  point_cloud->header.stamp = timestampToROS(k4a_depth_frame.get_device_timestamp());
+  point_cloud->header.stamp = timestampToROS(k4a_depth_frame.get_device_timestamp()); //stamp获取时间戳
 
   return fillColorPointCloud(calibration_data_.point_cloud_image_, calibration_data_.transformed_rgb_image_,
                              point_cloud);

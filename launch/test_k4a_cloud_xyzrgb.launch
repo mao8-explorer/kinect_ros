@@ -1,0 +1,68 @@
+<launch>
+
+    <!-- <include file="$(find azure_kinect_ros_driver)/launch/driver.launch">
+       <arg name="point_cloud" value="false"/>
+       <arg name="rgb_point_cloud" value="false"/>
+    </include> -->
+    
+
+
+    <!-- Spawn a nodelet manager -->
+    <node pkg="nodelet" type="nodelet" name="manager" args="manager" output="screen">
+      <param name="num_worker_threads" value="16" />
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="rectify_rgb"
+          args="load image_proc/rectify manager --no-bond"
+          respawn="true">
+      <remap from="image_mono"  to="/master/rgb/image_raw" />
+      <remap from="image_rect"  to="/master/rgb/image_rect" />
+    </node>
+
+  
+    <node pkg="nodelet" type="nodelet" name="points_xyzrgb" args="load rtabmap_ros/point_cloud_xyzrgb manager">
+      <remap from="rgb/image"       to="/master/rgb/image_rect"/>
+      <remap from="depth/image"     to="/master/depth_to_rgb/image_raw"/>
+      <remap from="rgb/camera_info" to="/master/rgb/camera_info"/>
+      <remap from="cloud"           to="/master/points2" />
+
+      <param name="voxel_size" type="double" value="0.01"/>
+      <param name="decimation" type="int" value="2"/>
+      <param name="max_depth"   type="double" value="4"/>
+      <param name="noise_filter_radius" type="double" value="0.00"/>
+      <param name="normal_k" type="int" value="0"/>
+    </node>
+
+
+    <node pkg="nodelet" type="nodelet" name="sub_rectify_rgb"
+          args="load image_proc/rectify manager --no-bond"
+          respawn="true">
+      <remap from="image_mono"  to="/sub/rgb/image_raw" />
+      <remap from="image_rect"  to="/sub/rgb/image_rect" />
+    </node>
+
+  
+    <node pkg="nodelet" type="nodelet" name="sub_points_xyzrgb" args="load rtabmap_ros/point_cloud_xyzrgb manager">
+      <remap from="rgb/image"       to="/sub/rgb/image_rect"/>
+      <remap from="depth/image"     to="/sub/depth_to_rgb/image_raw"/>
+      <remap from="rgb/camera_info" to="/sub/rgb/camera_info"/>
+      <remap from="cloud"           to="/sub/points2" />
+
+      <param name="voxel_size" type="double" value="0.01"/>
+      <param name="decimation" type="int" value="2"/>
+      <param name="max_depth"   type="double" value="4"/>
+      <param name="noise_filter_radius" type="double" value="0.00"/>
+      <param name="normal_k" type="int" value="0"/>
+    </node>
+
+
+    <node pkg="azure_kinect_ros_driver" type="transformation" name="transformation" output="screen" launch-prefix="bash -c 'sleep 1; $0 $@'"/>
+
+    <node pkg="azure_kinect_ros_driver" type="fuse_pcl" name="fuse_pcl" output="screen" launch-prefix="bash -c 'sleep 2; $0 $@'" />
+
+
+  
+
+</launch>
+
+

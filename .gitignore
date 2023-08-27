@@ -4,6 +4,7 @@ ext/**
 # VS Code folders
 .vscode/
 
+build/
 # Prerequisites
 *.d
 

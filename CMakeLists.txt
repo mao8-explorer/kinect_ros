@@ -25,6 +25,10 @@ find_package(catkin REQUIRED COMPONENTS
   nodelet
   cv_bridge
   camera_info_manager
+  pcl_conversions
+  pcl_ros
+  message_filters
+  message_generation
 )
 
 find_package(OpenCV REQUIRED)
@@ -219,6 +223,28 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   "include"
 )
+
+add_executable(fuse_pcl
+  src/fuse_pcl.cpp
+  )
+target_link_libraries(fuse_pcl
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+)
+  
+add_executable(transformation
+  src/transformation.cpp
+  )
+target_link_libraries(transformation
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+  jsoncpp
+)
+
+add_executable(jsonread
+  src/jsonread.cpp)
+
+target_link_libraries(jsonread jsoncpp)
 
 target_link_libraries(${PROJECT_NAME}_node
   ${K4A_LIBS}
