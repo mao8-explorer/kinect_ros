@@ -4,7 +4,10 @@ ext/**
 # VS Code folders
 .vscode/
 
+.github/
 build/
+devel/
+logs/
 # Prerequisites
 *.d
 
